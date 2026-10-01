@@ -1,0 +1,6 @@
+.agents/
+.pnpm-store/
+inspiraçoes/
+skills-lock.json
+dist/
+*.tsbuildinfo
