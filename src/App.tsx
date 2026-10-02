@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -54,6 +55,26 @@ const navigation = [
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const heroRef = useRef<HTMLElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const reducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const heroDepth = useTransform(scrollYProgress, [0, 1], ["scale(1)", "scale(.97)"]);
+  const heroFade = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
+
+  const handleHeroPointerMove = (event: ReactPointerEvent<HTMLElement>) => {
+    if (reducedMotion || event.pointerType !== "mouse" || !heroVideoRef.current) return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * -20;
+    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * -20;
+    heroVideoRef.current.style.setProperty("--hero-shift-x", `${x}px`);
+    heroVideoRef.current.style.setProperty("--hero-shift-y", `${y}px`);
+  };
+
+  const resetHeroPointer = () => {
+    heroVideoRef.current?.style.setProperty("--hero-shift-x", "0px");
+    heroVideoRef.current?.style.setProperty("--hero-shift-y", "0px");
+  };
 
   return (
     <>
@@ -71,26 +92,33 @@ function App() {
       </header>
 
       <main>
-        <section className="hero" id="inicio">
-          <video className="hero-video" autoPlay muted loop playsInline preload="auto" aria-hidden="true">
+        <motion.section
+          ref={heroRef}
+          className="hero"
+          id="inicio"
+          style={reducedMotion ? undefined : { transform: heroDepth, opacity: heroFade }}
+          onPointerMove={handleHeroPointerMove}
+          onPointerLeave={resetHeroPointer}
+        >
+          <video ref={heroVideoRef} className="hero-video" autoPlay={!reducedMotion} muted loop playsInline preload="auto" aria-hidden="true">
             <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_064122_c4750c0e-7476-4b44-94a2-a85a65c63bf2.mp4" type="video/mp4" />
           </video>
           <div className="hero-atmosphere" aria-hidden="true" />
           <div className="hero-shade" aria-hidden="true" />
           <div className="hero-grid" />
           <div className="hero-content">
-            <div className="eyebrow"><span className="eyebrow-line" /><TextScanner text="ANLI" className="eyebrow-scanner" /><span className="eyebrow-label">AGÊNCIA DIGITAL <span className="eyebrow-dot">/</span> BELÉM · PA</span></div>
-            <h1>Seu negócio merece<br className="hero-break" />{" "}uma presença digital<br className="hero-break" />{" "}<span className="gradient-word">à altura.</span></h1>
+            <div className="eyebrow hero-signature"><span className="eyebrow-line" /><TextScanner text="ANLI" className="eyebrow-scanner" /><span className="eyebrow-label">AGÊNCIA DIGITAL <span className="eyebrow-dot">/</span> BELÉM · PA</span></div>
+            <h1><span className="hero-title-line">Seu negócio merece</span><span className="hero-title-line">uma presença digital</span><span className="hero-title-line gradient-word">à altura.</span></h1>
             <p className="hero-copy">Criamos sites profissionais, modernos e estratégicos para empresas que querem apresentar seu valor, conquistar confiança e crescer no digital.</p>
             <p className="hero-services">SITES INSTITUCIONAIS · LANDING PAGES · E-COMMERCE</p>
-            <div className="hero-actions">
+            <div className="hero-actions hero-ctas">
               <a className="button button--primary" href={whatsApp("5591981241481", marcosMessage)} target="_blank" rel="noopener noreferrer">Falar com Marcos <ArrowUpRight size={17} /></a>
               <a className="button button--glass" href={whatsApp("5591986089166", arthurMessage)} target="_blank" rel="noopener noreferrer">Falar com Arthur <ArrowUpRight size={17} /></a>
             </div>
           </div>
-          <div className="hero-bottom"><span>ESTRATÉGIA · DESIGN · DESENVOLVIMENTO</span><a href="#manifesto">DESCUBRA A ANLI <ArrowDown size={13} /></a><span>FEITO NO BRASIL</span></div>
+          <div className="hero-bottom hero-footer-note"><span>ESTRATÉGIA · DESIGN · DESENVOLVIMENTO</span><a href="#manifesto">DESCUBRA A ANLI <ArrowDown size={13} /></a><span>FEITO NO BRASIL</span></div>
           <div className="hero-orb hero-orb--one" /><div className="hero-orb hero-orb--two" />
-        </section>
+        </motion.section>
 
         <section className="manifesto section-pad" id="manifesto">
           <div className="section-kicker"><span>01 / POSICIONAMENTO</span><span className="kicker-rule" /><span className="kicker-note">MAIS QUE UM SITE. UMA MARCA PRESENTE.</span></div>
