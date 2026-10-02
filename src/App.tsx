@@ -72,7 +72,11 @@ function App() {
 
       <main>
         <section className="hero" id="inicio">
+          <video className="hero-video" autoPlay muted loop playsInline preload="auto" aria-hidden="true">
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_064122_c4750c0e-7476-4b44-94a2-a85a65c63bf2.mp4" type="video/mp4" />
+          </video>
           <div className="hero-atmosphere" aria-hidden="true" />
+          <div className="hero-shade" aria-hidden="true" />
           <div className="hero-grid" />
           <div className="hero-content">
             <div className="eyebrow"><span className="eyebrow-line" /><TextScanner text="ANLI" className="eyebrow-scanner" /><span className="eyebrow-label">AGÊNCIA DIGITAL <span className="eyebrow-dot">/</span> BELÉM · PA</span></div>
