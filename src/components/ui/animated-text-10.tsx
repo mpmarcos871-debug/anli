@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useState, type CSSProperties } from "react";
 
 export interface TextScannerProps {
   text?: string;
@@ -16,7 +17,17 @@ export function TextScanner({
   duration = 3.2,
 }: TextScannerProps) {
   const reducedMotion = useReducedMotion();
-  const baseClass = `text-scanner ${className}`.trim();
+  const [touchViewport, setTouchViewport] = useState(false);
+
+  useEffect(() => {
+    const viewport = window.matchMedia("(max-width: 800px), (pointer: coarse)");
+    const updateViewport = () => setTouchViewport(viewport.matches);
+    updateViewport();
+    viewport.addEventListener("change", updateViewport);
+    return () => viewport.removeEventListener("change", updateViewport);
+  }, []);
+
+  const baseClass = `text-scanner ${touchViewport ? "text-scanner--touch" : ""} ${className}`.trim();
 
   if (reducedMotion) {
     return <span className={baseClass} style={{ color: inkColor }}>{text}</span>;
@@ -26,22 +37,23 @@ export function TextScanner({
     <motion.span
       className={baseClass}
       style={{
+        "--scanner-duration": `${duration}s`,
         backgroundImage: `linear-gradient(90deg, color-mix(in srgb, ${inkColor} 38%, transparent) 0 39%, ${inkColor} 49%, color-mix(in srgb, ${inkColor} 38%, transparent) 61% 100%)`,
         backgroundSize: "240% 100%",
         WebkitBackgroundClip: "text",
         backgroundClip: "text",
         color: "transparent",
-      }}
-      animate={{ backgroundPosition: ["100% 0", "0% 0"] }}
-      transition={{ duration, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" }}
+      } as CSSProperties}
+      animate={touchViewport ? undefined : { backgroundPosition: ["100% 0", "0% 0"] }}
+      transition={touchViewport ? undefined : { duration, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" }}
     >
       {text}
       <motion.span
         aria-hidden="true"
         className="text-scanner__beam"
         style={{ background: accentColor, boxShadow: `0 0 12px ${accentColor}, 0 0 26px color-mix(in srgb, ${accentColor} 58%, transparent)` }}
-        animate={{ left: ["0%", "100%"], transform: ["translateX(0)", "translateX(-100%)"] }}
-        transition={{ duration, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" }}
+        animate={touchViewport ? undefined : { left: ["0%", "100%"], transform: ["translateX(0)", "translateX(-100%)"] }}
+        transition={touchViewport ? undefined : { duration, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" }}
       />
     </motion.span>
   );

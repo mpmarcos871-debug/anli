@@ -86,6 +86,10 @@
 @media(hover:hover) and (pointer:fine){.service-card:hover{transform:translateY(-2px)}}
 @media(prefers-reduced-motion:reduce){.service-card:hover{transform:none}}
 
+@keyframes anli-scanner-sweep{0%,100%{background-position:100% 0}50%{background-position:0% 0}}
+@keyframes anli-scanner-beam{0%,100%{left:0%;transform:translateX(0)}50%{left:100%;transform:translateX(-100%)}}
+@media(prefers-reduced-motion:no-preference){.text-scanner--touch{animation:anli-scanner-sweep var(--scanner-duration,3.2s) ease-in-out infinite alternate}.text-scanner--touch .text-scanner__beam{animation:anli-scanner-beam var(--scanner-duration,3.2s) ease-in-out infinite alternate}}
+
 /* Hero: monochrome atmosphere, with mobile-safe spacing and type. */
 .hero{background:#0A0A0A}
 .hero-atmosphere{position:absolute;inset:0;z-index:-3;pointer-events:none;background:radial-gradient(ellipse 64% 72% at 82% 40%,rgba(255,255,255,.075),transparent 66%),radial-gradient(ellipse 42% 38% at 88% 82%,rgba(255,255,255,.035),transparent 70%),linear-gradient(125deg,#080808 0%,#111 56%,#090909 100%)}
