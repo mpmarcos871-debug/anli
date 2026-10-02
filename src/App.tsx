@@ -72,14 +72,11 @@ function App() {
 
       <main>
         <section className="hero" id="inicio">
-          <video className="hero-video" autoPlay muted loop playsInline aria-hidden="true" poster="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=2200&q=85">
-            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260508_064122_c4750c0e-7476-4b44-94a2-a85a65c63bf2.mp4" type="video/mp4" />
-          </video>
-          <div className="hero-shade" />
+          <div className="hero-atmosphere" aria-hidden="true" />
           <div className="hero-grid" />
           <div className="hero-content">
             <div className="eyebrow"><span className="eyebrow-line" /><TextScanner text="ANLI" className="eyebrow-scanner" /><span className="eyebrow-label">AGÊNCIA DIGITAL <span className="eyebrow-dot">/</span> BELÉM · PA</span></div>
-            <h1>Seu negócio merece<br />uma presença digital<br /><span className="gradient-word">à altura.</span></h1>
+            <h1>Seu negócio merece<br className="hero-break" />{" "}uma presença digital<br className="hero-break" />{" "}<span className="gradient-word">à altura.</span></h1>
             <p className="hero-copy">Criamos sites profissionais, modernos e estratégicos para empresas que querem apresentar seu valor, conquistar confiança e crescer no digital.</p>
             <p className="hero-services">SITES INSTITUCIONAIS · LANDING PAGES · E-COMMERCE</p>
             <div className="hero-actions">
