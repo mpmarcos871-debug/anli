@@ -106,6 +106,11 @@ function App() {
           <div className="hero-atmosphere" aria-hidden="true" />
           <div className="hero-shade" aria-hidden="true" />
           <div className="hero-grid" />
+          <div className="hero-sculpture" aria-hidden="true">
+            <div className="hero-sculpture__core" />
+            <div className="hero-sculpture__rim" />
+            <div className="hero-sculpture__glint" />
+          </div>
           <div className="hero-content">
             <div className="eyebrow hero-signature"><span className="eyebrow-line" /><TextScanner text="ANLI" className="eyebrow-scanner" /><span className="eyebrow-label">AGÊNCIA DIGITAL <span className="eyebrow-dot">/</span> BELÉM · PA</span></div>
             <h1><span className="hero-title-line">Seu negócio merece</span><span className="hero-title-line">uma presença digital</span><span className="hero-title-line gradient-word">à altura.</span></h1>
